@@ -1,7 +1,5 @@
 #!/bin/bash
 
-TERMINFO="$(athdir /mit/barnowl share)"/terminfo
-export TERMINFO
 eval "$(env SHELL=/bin/bash "$(athdir /mit/barnowl bin)/barnowl-perl-config")"
 
 # Does this do anything? At least newer PARs use PAR_TMPDIR and don't read
