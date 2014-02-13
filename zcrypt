@@ -1,4 +1,28 @@
-#!/bin/sh
-BARNOWL_REAL=zcrypt.real
-export BARNOWL_REAL
-exec `dirname "$0"`/barnowl "$@"
+#!/bin/bash
+
+ZCRYPT_REAL=zcrypt.real
+
+case "$ZCRYPT_REAL" in
+    /*) ZCRYPT_REAL_PATH="$ZCRYPT_REAL" ;;
+    *) ZCRYPT_REAL_PATH="$(athdir /mit/barnowl bin)/$ZCRYPT_REAL" ;;
+esac
+
+# Detect zephyr name if necessary
+if [ ! -x "$ZCRYPT_REAL_PATH" ]; then
+    SUFFIX=
+
+    # Both Debian Lenny and Ubuntu Karmic use the _deb50
+    # sysname, but they have different zephyr versions (soname
+    # 3 and 4, respectively). So for that sysname, we the
+    # build script includes the zephyr soname into the binary
+    # name, and we pick the right one.
+    if /sbin/ldconfig -p | grep -qF "libzephyr.so.4"; then
+        SUFFIX=.zephyr4
+    else
+        SUFFIX=.zephyr3
+    fi
+
+    ZCRYPT_REAL_PATH="$ZCRYPT_REAL_PATH$SUFFIX"
+fi
+
+exec "$ZCRYPT_REAL_PATH" "$@"
