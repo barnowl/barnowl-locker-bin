@@ -1,4 +1,10 @@
 #!/bin/sh
+
+(sleep 6; zwrite -q "${ATHENA_USER:-$USER}" -O auto -m \
+'Instead of using the barnowl-256color script, you may wish to
+configure your terminal and screen for global 256 color support.  See
+https://barnowl.mit.edu/wiki/256Colors.') &
+
 case "$TERM" in
 screen-bce)
     TERM=screen-256color-bce
